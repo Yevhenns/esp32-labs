@@ -1,0 +1,23 @@
+.btn {
+  flex: 1;
+  padding: 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+   transition: transform 0.1s, background 0.2s;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.grab {
+  background: #d32f2f;
+  color: white;
+}
+
+.release {
+  background: #388e3c;
+  color: white;
+}
