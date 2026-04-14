@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import './App.css';
+import { useTankControl } from './hooks/useTankControl';
 
 function App() {
   const [count, setCount] = useState(0);
+
+  useTankControl();
 
   return (
     <>
