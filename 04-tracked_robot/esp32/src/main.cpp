@@ -11,8 +11,8 @@ const char *websockets_server_host = WS_HOST;
 const uint16_t websockets_server_port = WS_PORT;
 const char *websockets_server_url = WS_URL;
 
-const int in1 = 13;
-const int in2 = 12;
+const int in1 = 25;
+const int in2 = 26;
 const int in3 = 14;
 const int in4 = 27;
 
@@ -90,6 +90,11 @@ void onWSEvent(WStype_t type, uint8_t *payload, size_t length)
 void setup()
 {
   Serial.begin(115200);
+
+  ledcSetup(ch1, 1000, 8);
+  ledcSetup(ch2, 1000, 8);
+  ledcSetup(ch3, 1000, 8);
+  ledcSetup(ch4, 1000, 8);
 
   ledcAttachPin(in1, ch1);
   ledcAttachPin(in2, ch2);

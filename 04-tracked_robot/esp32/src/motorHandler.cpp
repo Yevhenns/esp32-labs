@@ -8,7 +8,7 @@ const int ch4 = 3;
 
 const int MIN_SPEED = 30;
 
-void setLeftMotor(int speed)
+void setRightMotor(int speed)
 {
     speed = constrain(speed, -255, 255);
 
@@ -32,7 +32,7 @@ void setLeftMotor(int speed)
     }
 }
 
-void setRightMotor(int speed)
+void setLeftMotor(int speed)
 {
     speed = constrain(speed, -255, 255);
 
