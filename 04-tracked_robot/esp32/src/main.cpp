@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <WebSocketsClient.h>
 #include <WiFiMulti.h>
-#include <ESP32Servo.h>
 #include <ArduinoJson.h>
 #include "secrets.h"
+#include "motorHandler.h"
 
 const char *ssid = WIFI_SSID;
 const char *password = WIFI_PASSWORD;
@@ -11,11 +11,20 @@ const char *websockets_server_host = WS_HOST;
 const uint16_t websockets_server_port = WS_PORT;
 const char *websockets_server_url = WS_URL;
 
+const int in1 = 13;
+const int in2 = 12;
+const int in3 = 14;
+const int in4 = 27;
+
+const int ch1 = 0;
+const int ch2 = 1;
+const int ch3 = 2;
+const int ch4 = 3;
+
 #define MSG_SIZE 256
 
 WiFiMulti wifiMulti;
 WebSocketsClient wsClient;
-Servo myServo;
 
 void handleMessage(uint8_t *payload)
 {
@@ -31,20 +40,30 @@ void handleMessage(uint8_t *payload)
   if (!action)
     return;
 
-  if (strcmp(action, "grab") == 0)
+  if (strcmp(action, "forward") == 0)
   {
-    myServo.write(100);
-    Serial.println("Servo grabbed!");
+    setLeftMotor(150);
+    setRightMotor(150);
   }
-  else if (strcmp(action, "release") == 0)
+  else if (strcmp(action, "backward") == 0)
   {
-    myServo.write(80);
-    Serial.println("Servo released!");
+    setLeftMotor(-150);
+    setRightMotor(-150);
+  }
+  else if (strcmp(action, "left") == 0)
+  {
+    setLeftMotor(-150);
+    setRightMotor(150);
+  }
+  else if (strcmp(action, "right") == 0)
+  {
+    setLeftMotor(150);
+    setRightMotor(-150);
   }
   else if (strcmp(action, "stop") == 0)
   {
-    myServo.write(90);
-    Serial.println("Servo stopped!");
+    setLeftMotor(0);
+    setRightMotor(0);
   }
 }
 
@@ -71,8 +90,16 @@ void onWSEvent(WStype_t type, uint8_t *payload, size_t length)
 void setup()
 {
   Serial.begin(115200);
-  myServo.attach(33);
-  myServo.write(90);
+
+  ledcAttachPin(in1, ch1);
+  ledcAttachPin(in2, ch2);
+  ledcAttachPin(in3, ch3);
+  ledcAttachPin(in4, ch4);
+
+  delay(1000);
+
+  setLeftMotor(0);
+  setRightMotor(0);
 
   pinMode(LED_BUILTIN, OUTPUT);
 
